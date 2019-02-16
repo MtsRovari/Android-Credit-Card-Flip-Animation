@@ -10,6 +10,7 @@ public class CreditCardActivity extends AppCompatActivity {
 
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
+    private AnimatorSet mSetLeftOut;
     private boolean mIsBackVisible = false;
     private View mCardFrontLayout;
     private View mCardBackLayout;
@@ -29,7 +30,7 @@ public class CreditCardActivity extends AppCompatActivity {
     }
 
     private void changeCameraDistance() {
-        int distance = 10000;
+        int distance = 15000;
         float scale = getResources().getDisplayMetrics().density * distance;
         mCardFrontLayout.setCameraDistance(scale);
         mCardBackLayout.setCameraDistance(scale);
@@ -43,6 +44,7 @@ public class CreditCardActivity extends AppCompatActivity {
     private void loadAnimations() {
 
         mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.out_animation);
+        mSetLeftOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.in_animation);
         mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.in_animation);
 
         mSetRightCardOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.card_flip_right_out);
@@ -55,6 +57,22 @@ public class CreditCardActivity extends AppCompatActivity {
     private void findViews() {
         mCardBackLayout = findViewById(R.id.credit_card_back);
         mCardFrontLayout = findViewById(R.id.credit_card_front);
+    }
+
+    public void flipCard(View view) {
+        if (!mIsBackVisible) {
+            mSetLeftCardIn.setTarget(mCardBackLayout);
+            mSetRightOut.setTarget(mCardFrontLayout);
+            mSetLeftCardIn.start();
+            mSetRightOut.start();
+            mIsBackVisible = true;
+        } else {
+            mSetLeftCardIn.setTarget(mCardFrontLayout);
+            mSetRightOut.setTarget(mCardBackLayout);
+            mSetLeftCardIn.start();
+            mSetRightOut.start();
+            mIsBackVisible = false;
+        }
     }
 
 //    public void flipCard(View view) {
@@ -73,19 +91,43 @@ public class CreditCardActivity extends AppCompatActivity {
 //        }
 //    }
 
-    public void flipCard(View view) {
-        if (!mIsBackVisible) {
-            mSetRightCardOut.setTarget(mCardBackLayout);
-            mSetLeftCardIn.setTarget(mCardFrontLayout);
-            mSetRightCardOut.start();
-            mSetLeftCardIn.start();
-            mIsBackVisible = true;
-        } else {
-            mSetLeftCardOut.setTarget(mCardFrontLayout);
-            mSetRightCardIn.setTarget(mCardBackLayout);
-            mSetLeftCardOut.start();
-            mSetRightCardIn.start();
-            mIsBackVisible = false;
-        }
-    }
+    /**
+     * this is for the same direction always
+     * @param view
+     */
+//    public void flipCard(View view) {
+//        if (!mIsBackVisible) {
+//            mSetLeftCardIn.setTarget(mCardBackLayout);
+//            mSetRightOut.setTarget(mCardFrontLayout);
+//            mSetLeftCardIn.start();
+//            mSetRightOut.start();
+//            mIsBackVisible = true;
+//        } else {
+//            mSetLeftCardIn.setTarget(mCardFrontLayout);
+//            mSetRightOut.setTarget(mCardBackLayout);
+//            mSetLeftCardIn.start();
+//            mSetRightOut.start();
+//            mIsBackVisible = false;
+//        }
+//    }
+
+    /**
+     * to different directions
+     * @param view
+     */
+//    public void flipCard(View view) {
+//        if (!mIsBackVisible) {
+//            mSetLeftCardIn.setTarget(mCardBackLayout);
+//            mSetRightOut.setTarget(mCardFrontLayout);
+//            mSetLeftCardIn.start();
+//            mSetRightOut.start();
+//            mIsBackVisible = true;
+//        } else {
+//            mSetRightCardIn.setTarget(mCardFrontLayout);
+//            mSetLeftIn.setTarget(mCardBackLayout);          //mSetLeftIn - mSetLeftCardOut - mSetLeftCardIn - mSetRightOut
+//            mSetRightCardIn.start();
+//            mSetLeftIn.start();
+//            mIsBackVisible = false;
+//        }
+//    }
 }
